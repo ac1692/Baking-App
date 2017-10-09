@@ -31,5 +31,11 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.google.android.exoplayer:exoplayer:r2.+'
 
-
+    androidTestCompile 'com.android.support:support-annotations:26.+'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    compile 'com.android.support:percent:26.+'
+    compile('com.android.support.test.espresso:espresso-contrib:2.2.2')
+    androidTestCompile 'junit:junit:4.12'
 }

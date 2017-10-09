@@ -7,8 +7,7 @@
     android:tag="600"
     xmlns:tools="http://schemas.android.com/tools">
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/recipes_container"
         tools:context="application.maaclab.ac.bakingapp.activity.RecipesActivity">
@@ -17,7 +16,6 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:layout_height="match_parent"
         android:id="@+id/video_container"
         tools:context="application.maaclab.ac.bakingapp.activity.RecipesActivity">

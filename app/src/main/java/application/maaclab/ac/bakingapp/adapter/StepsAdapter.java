@@ -11,12 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+
 import application.maaclab.ac.bakingapp.R;
+import application.maaclab.ac.bakingapp.fragment.DetailFragment;
+import application.maaclab.ac.bakingapp.fragment.IngredientFragment;
 import application.maaclab.ac.bakingapp.fragment.VideoFragment;
+import application.maaclab.ac.bakingapp.helper.CallbackClick;
 
 import static application.maaclab.ac.bakingapp.activity.MainActivity.recipesPojo;
 
@@ -29,10 +34,15 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
     private Context context;
     private int positionRecipe;
     private Activity activity;
-    public StepsAdapter(Context context, int positionRecipe, Activity activity) {
+    private boolean tablet;
+    private CallbackClick listener;
+
+    public StepsAdapter(Context context, int positionRecipe, Activity activity, boolean tablet, CallbackClick listener) {
         this.context = context;
         this.positionRecipe = positionRecipe;
         this.activity = activity;
+        this.tablet = tablet;
+        this.listener = listener;
     }
 
     @Override
@@ -44,6 +54,14 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
 
     @Override
     public void onBindViewHolder(ItemHolder holder, int position) {
+        if(position==0) {
+            holder.desc.setVisibility(TextView.VISIBLE);
+            holder.fullDesc.setVisibility(TextView.GONE);
+            holder.shortDesc.setVisibility(TextView.GONE);
+            holder.imageView.setVisibility(ImageView.GONE);
+            holder.linearLayout.setVisibility(LinearLayout.GONE);
+            holder.ingredients_line.setVisibility(View.VISIBLE);
+        }
 
         holder.shortDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getShortDescription());
         holder.fullDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getDescription());
@@ -59,11 +77,18 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
         return recipesPojo.get(positionRecipe).getSteps().size();
     }
 
+
     public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView shortDesc, fullDesc;
         ImageView imageView;
+        private TextView desc;
+        private LinearLayout linearLayout;
+        private View ingredients_line;
         public ItemHolder(View view){
             super(view);
+            ingredients_line = (View) view.findViewById(R.id.ingredients_line);
+            linearLayout = (LinearLayout) view.findViewById(R.id.linear);
+            desc = (TextView) view.findViewById(R.id.ingredients);
             shortDesc = (TextView) view.findViewById(R.id.short_desc);
             fullDesc = (TextView) view.findViewById(R.id.full_desc);
             imageView = (ImageView) view.findViewById(R.id.img);
@@ -72,17 +97,41 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
 
         @Override
         public void onClick(View view) {
+            if (!tablet) {
+                if (getAdapterPosition() == 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", positionRecipe);
+                    IngredientFragment ingredientFragment = IngredientFragment.newInstance(bundle);
+                    FragmentTransaction fragmentTransaction = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.recipes_container, ingredientFragment, IngredientFragment.class.getSimpleName())
+                            .addToBackStack(null).commit();
+                } else {
 
-            VideoFragment videoFragment = new VideoFragment();
-            Bundle  bundle = new Bundle();
-            bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()).getVideoURL());
-            bundle.putInt("position", positionRecipe);
-            bundle.putInt("position_adapter", getAdapterPosition());
-            videoFragment.setArguments(bundle);
-            FragmentTransaction fragmentTransaction = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.recipes_container, videoFragment, VideoFragment.class.getSimpleName())
-                    .addToBackStack(null).commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()).getVideoURL());
+                    bundle.putInt("position", positionRecipe);
+                    bundle.putInt("position_adapter", getAdapterPosition());
+                    VideoFragment videoFragment = VideoFragment.newInstance(bundle, tablet);
+                    FragmentTransaction fragmentTransaction = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.recipes_container, videoFragment, VideoFragment.class.getSimpleName())
+                            .addToBackStack(null).commit();
+                }
+            }
+            else {
+                if(getAdapterPosition() == 0) {
+                    listener.clickMethod(null);
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()).getVideoURL());
+                    bundle.putInt("position", positionRecipe);
+                    bundle.putInt("position_adapter", getAdapterPosition());
+                    listener.clickMethod(bundle);
+                }
+            }
+
         }
     }
+
+
 }
 

@@ -12,10 +12,15 @@ import android.widget.TextView;
 
 
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 import application.maaclab.ac.bakingapp.R;
 import application.maaclab.ac.bakingapp.activity.RecipesActivity;
+import application.maaclab.ac.bakingapp.model.RecipesPojo;
 
 import static application.maaclab.ac.bakingapp.activity.MainActivity.recipesPojo;
+import static application.maaclab.ac.bakingapp.widget.BakingAppWidget.bakingAppWidget;
 
 /**
  * Created by Wipro on 18-09-2017.
@@ -25,9 +30,13 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.ItemHolder
 
     private Context context;
     private Activity activity;
-    public BakingAdapter(Context context, Activity activity) {
+    private boolean test;
+    public BakingAdapter(Context context, Activity activity, boolean test, List<RecipesPojo> testPojo) {
         this.context = context;
         this.activity = activity;
+        this.test = test;
+//        if(test == true)
+//            recipesPojo = testPojo;
     }
 
     @Override
@@ -70,6 +79,8 @@ public class BakingAdapter extends RecyclerView.Adapter<BakingAdapter.ItemHolder
         public void onClick(View view) {
             Intent intent = new Intent(activity, RecipesActivity.class);
             intent.putExtra("position", getAdapterPosition());
+            bakingAppWidget.callWidget(getAdapterPosition());
+
             activity.startActivity(intent);
 
         }

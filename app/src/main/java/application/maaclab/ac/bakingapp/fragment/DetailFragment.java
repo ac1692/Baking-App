@@ -1,9 +1,12 @@
 package application.maaclab.ac.bakingapp.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,26 +22,39 @@ import application.maaclab.ac.bakingapp.R;
 import application.maaclab.ac.bakingapp.activity.MainActivity;
 import application.maaclab.ac.bakingapp.adapter.IngredientsAdapter;
 import application.maaclab.ac.bakingapp.adapter.StepsAdapter;
+import application.maaclab.ac.bakingapp.helper.CallbackClick;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Wipro on 18-09-2017.
  */
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements CallbackClick {
 
-    private RecyclerView ingredientsRecyclerView, stepsRecyclerView;
+
+    private RecyclerView stepsRecyclerView;
     private Context context;
-    private IngredientsAdapter ingredientsAdapter;
     private StepsAdapter stepsAdapter;
-    private int currentVisiblePositionIngredients;
     private int currentVisiblePositionSteps;
     private int position;
+
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null)
             position = getArguments().getInt("position");
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+//        fragmentListener = (RecipeFragmentListener) context;
+    }
+
 
     @Nullable
     @Override
@@ -47,19 +63,30 @@ public class DetailFragment extends Fragment {
 
 
         context = getActivity().getApplicationContext();
-        ingredientsRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_ingredients);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("shared", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("last_opened_recipe", position);
+        editor.apply();
+
         stepsRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_description);
 
-        ingredientsAdapter = new IngredientsAdapter(context, position);
-        stepsAdapter = new StepsAdapter(context, position, getActivity());
-        if(((RelativeLayout) rootView.findViewById(R.id.linear)).getTag().equals("600")) {
-            ingredientsRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
-            stepsRecyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+        CallbackClick click = (CallbackClick) this;
+        if(((LinearLayout) rootView.findViewById(R.id.linear)).getTag().equals("600")) {
+            stepsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            stepsAdapter = new StepsAdapter(context, position, getActivity(), true, click);
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", position);
+
+            IngredientFragment ingredientFragment = IngredientFragment.newInstance(bundle);
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, ingredientFragment, IngredientFragment.class.getSimpleName())
+                    .addToBackStack(null).commit();
+
         } else {
-            ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            stepsAdapter = new StepsAdapter(context, position, getActivity(), false, click);
             stepsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
-        ingredientsRecyclerView.setAdapter(ingredientsAdapter);
         stepsRecyclerView.setAdapter(stepsAdapter);
         return rootView;
     }
@@ -81,17 +108,29 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
-            currentVisiblePositionIngredients = ((LinearLayoutManager)ingredientsRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-            currentVisiblePositionSteps = ((LinearLayoutManager)stepsRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-    }
+        super.onPause();}
 
     @Override
     public void onResume() {
         super.onResume();
-        ingredientsRecyclerView.getLayoutManager().scrollToPosition((int)currentVisiblePositionIngredients);
-        stepsRecyclerView.getLayoutManager().scrollToPosition((int)currentVisiblePositionSteps);
-        currentVisiblePositionSteps = 0;
-        currentVisiblePositionIngredients = 0;
+
+    }
+
+    @Override
+    public void clickMethod(Bundle bundle) {
+
+        if(bundle == null) {
+            Bundle bundle1 = new Bundle();
+            bundle1.putInt("position", position);
+            IngredientFragment ingredientFragment = IngredientFragment.newInstance(bundle1);
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, ingredientFragment, IngredientFragment.class.getSimpleName())
+                    .addToBackStack(null).commit();
+        } else {
+            VideoFragment videoFragment = VideoFragment.newInstance(bundle, true);
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, videoFragment, VideoFragment.class.getSimpleName())
+                    .addToBackStack(null).commit();
+        }
     }
 }

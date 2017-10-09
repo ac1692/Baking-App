@@ -1,63 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
-    <RelativeLayout
-        android:orientation="vertical"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/linear"
+    android:tag="0"
+    android:background="#303030"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:id="@+id/linear"
-        android:tag="0"
-        android:background="#303030"
-        android:layout_height="match_parent">
+        android:padding="5dp"
+        android:id="@+id/recycler_description"
+        android:layout_height="wrap_content"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:id="@+id/relative1"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textColor="#fff"
-                android:layout_height="wrap_content"
-                android:id="@+id/ingredient_txt"
-                android:text="@string/ingredients"
-                android:textSize="24sp"
-                />
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:layout_below="@+id/relative1"
-            android:id="@+id/recycler_ingredients"
-            android:layout_height="wrap_content"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:id="@+id/relative2"
-            android:layout_below="@+id/recycler_ingredients"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:textColor="#fff"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"
-                android:id="@+id/description_txt"
-                android:text="@string/steps"
-                android:textSize="24sp"
-                />
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:layout_below="@+id/relative2"
-            android:id="@+id/recycler_description"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
-</ScrollView>
+</LinearLayout>

@@ -3,7 +3,10 @@ package application.maaclab.ac.bakingapp.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +18,14 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import application.maaclab.ac.bakingapp.R;
 import application.maaclab.ac.bakingapp.activity.MainActivity;
 import application.maaclab.ac.bakingapp.adapter.BakingAdapter;
+import application.maaclab.ac.bakingapp.helper.RecipesPojoDownloader;
+import application.maaclab.ac.bakingapp.helper.SimpleIdlingResource;
+import application.maaclab.ac.bakingapp.model.RecipesPojo;
 
 /**
  * Created by Wipro on 18-09-2017.
@@ -37,6 +44,7 @@ public class BakingFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,7 +53,7 @@ public class BakingFragment extends Fragment {
         context = getActivity().getApplicationContext();
         recyclerView = (RecyclerView) rooView.findViewById(R.id.recycler);
 
-        bakingAdapter = new BakingAdapter(context, getActivity());
+        bakingAdapter = new BakingAdapter(context, getActivity(), false, null);
         if(((RelativeLayout) rooView.findViewById(R.id.relative)).getTag().equals("600")) {
             orientation = 1;
             recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
