@@ -49,9 +49,10 @@ public class RecipesActivity extends AppCompatActivity {
         if(extras != null) {
             position = extras.getInt("position");
             getSupportActionBar().setTitle(recipesPojo.get(position).getName());
-            runnableDetailFragmentNavigation.run();
+            if(savedInstanceState == null)
+                runnableDetailFragmentNavigation.run();
         } else{
-            Toast.makeText(this, "make lode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Try Again!!", Toast.LENGTH_SHORT).show();
         }
     }
 

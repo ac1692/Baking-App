@@ -18,7 +18,7 @@
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/video_player_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_gravity="center" />
 
 
@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/frame"
         android:id="@+id/relative"
-        android:visibility="gone"
         android:padding="15dp"
         >
 
@@ -53,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:padding="5dp">
 

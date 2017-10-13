@@ -25,6 +25,7 @@ import application.maaclab.ac.bakingapp.adapter.StepsAdapter;
 import application.maaclab.ac.bakingapp.helper.CallbackClick;
 
 import static android.content.Context.MODE_PRIVATE;
+import static application.maaclab.ac.bakingapp.activity.MainActivity.recipesPojo;
 
 /**
  * Created by Wipro on 18-09-2017.
@@ -75,13 +76,22 @@ public class DetailFragment extends Fragment implements CallbackClick {
             stepsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             stepsAdapter = new StepsAdapter(context, position, getActivity(), true, click);
 
-            Bundle bundle = new Bundle();
-            bundle.putInt("position", position);
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("position", position);
 
-            IngredientFragment ingredientFragment = IngredientFragment.newInstance(bundle);
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container, ingredientFragment, IngredientFragment.class.getSimpleName())
+            Bundle bundle = new Bundle();
+            bundle.putString("link", recipesPojo.get(position).getSteps().get(0).getVideoURL());
+            bundle.putInt("position", position);
+            bundle.putInt("position_adapter", 0);
+            VideoFragment videoFragment = VideoFragment.newInstance(bundle, true);
+            FragmentTransaction fragmentTransaction = ((AppCompatActivity) getActivity()).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, videoFragment, VideoFragment.class.getSimpleName())
                     .addToBackStack(null).commit();
+
+//            IngredientFragment ingredientFragment = IngredientFragment.newInstance(bundle);
+//            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.container, ingredientFragment, IngredientFragment.class.getSimpleName())
+//                    .addToBackStack(null).commit();
 
         } else {
             stepsAdapter = new StepsAdapter(context, position, getActivity(), false, click);

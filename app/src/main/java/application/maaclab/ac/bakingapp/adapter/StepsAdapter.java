@@ -61,20 +61,21 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
             holder.imageView.setVisibility(ImageView.GONE);
             holder.linearLayout.setVisibility(LinearLayout.GONE);
             holder.ingredients_line.setVisibility(View.VISIBLE);
-        }
-
-        holder.shortDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getShortDescription());
-        holder.fullDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getDescription());
-        if(!recipesPojo.get(positionRecipe).getSteps().get(position).getThumbnailURL().equals("")) {
-            Picasso.with(context).load(recipesPojo.get(positionRecipe).getSteps().get(position).getThumbnailURL()).into(holder.imageView);
-        }else {
-            holder.imageView.setImageResource(R.drawable.recipe_image);
+        } else {
+            position = position - 1;
+            holder.shortDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getShortDescription());
+            holder.fullDesc.setText(recipesPojo.get(positionRecipe).getSteps().get(position).getDescription());
+            if (!recipesPojo.get(positionRecipe).getSteps().get(position).getThumbnailURL().equals("")) {
+                Picasso.with(context).load(recipesPojo.get(positionRecipe).getSteps().get(position).getThumbnailURL()).into(holder.imageView);
+            } else {
+                holder.imageView.setImageResource(R.drawable.recipe_image);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return recipesPojo.get(positionRecipe).getSteps().size();
+        return recipesPojo.get(positionRecipe).getSteps().size()+1;
     }
 
 
@@ -108,9 +109,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
                 } else {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()).getVideoURL());
+                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()-1).getVideoURL());
                     bundle.putInt("position", positionRecipe);
-                    bundle.putInt("position_adapter", getAdapterPosition());
+                    bundle.putInt("position_adapter", getAdapterPosition()-1);
                     VideoFragment videoFragment = VideoFragment.newInstance(bundle, tablet);
                     FragmentTransaction fragmentTransaction = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.recipes_container, videoFragment, VideoFragment.class.getSimpleName())
@@ -122,9 +123,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ItemHolder> 
                     listener.clickMethod(null);
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()).getVideoURL());
+                    bundle.putString("link", recipesPojo.get(positionRecipe).getSteps().get(getAdapterPosition()-1).getVideoURL());
                     bundle.putInt("position", positionRecipe);
-                    bundle.putInt("position_adapter", getAdapterPosition());
+                    bundle.putInt("position_adapter", getAdapterPosition()-1);
                     listener.clickMethod(bundle);
                 }
             }

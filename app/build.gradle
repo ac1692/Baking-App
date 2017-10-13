@@ -27,8 +27,8 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.android.support:percent:26.+'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.android.support:percent:26.+'
     compile 'com.google.android.exoplayer:exoplayer:r2.+'
 
     androidTestCompile 'com.android.support:support-annotations:26.+'

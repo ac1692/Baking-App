@@ -93,39 +93,16 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener {
 
     }
 
-    public void setOrientation(int orientation) {
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ViewGroup.LayoutParams layoutParams =
-                    videoPlayerView.getLayoutParams();
-            layoutParams.width = DisplayMetricUtils.getDeviceWidth(getActivity());
-            layoutParams.height = DisplayMetricUtils.getDeviceHeight(getActivity());
-            videoPlayerView.setLayoutParams(layoutParams);
 
-//            tvStepDescription.setVisibility(View.GONE);
-//            tvStepShortDescription.setVisibility(View.GONE);
-        } else {
-            ViewGroup.LayoutParams layoutParams =
-                    videoPlayerView.getLayoutParams();
-            layoutParams.width = DisplayMetricUtils.getDeviceWidth(getActivity());
-            layoutParams.height = (int) (9.0f / 16.0f * layoutParams.width);
-            videoPlayerView.setLayoutParams(layoutParams);
-
-//            tvStepDescription.setVisibility(View.VISIBLE);
-//            tvStepShortDescription.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_video_layout, container, false);
 
-
-//        if()
         context = getActivity().getApplicationContext();
-        progressBar = (ProgressBar) rootView.findViewById(R.id.pb_buffering);
-//        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        LinearLayout relativeLayout = (LinearLayout) rootView.findViewById(R.id.linear);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relative);
         if(getArguments() != null) {
             vidAddress = getArguments().getString("link");
             adapter_position = getArguments().getInt("position_adapter");
@@ -204,16 +181,7 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener {
         videoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.video_player_view);
         videoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-       /* if (tablet_bool) {
-            ViewGroup.LayoutParams layoutParams =
-                    videoPlayerView.getLayoutParams();
-            layoutParams.width = (int) (2.0f / 3.0f *
-                    DisplayMetricUtils.getDeviceWidth(getActivity()));
-            layoutParams.height = (int) (9.0f / 16.0f * layoutParams.width);
-            videoPlayerView.setLayoutParams(layoutParams);
-        }*/
-
-        if((RelativeLayout) rootView.findViewWithTag("landscape")!=null)
+/*        if((RelativeLayout) rootView.findViewWithTag("landscape")!=null)
         {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 getActivity().getWindow().getDecorView().setSystemUiVisibility(
@@ -226,10 +194,10 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener {
             }
             System.out.println("landscape");
             videoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
-        }
+        }*/
         initializePlayer();
-//        progressBar.setProgress(0);
-//        progressBar.setVisibility(ProgressBar.VISIBLE);
+        progressBar.setProgress(0);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         return rootView;
     }
@@ -369,9 +337,9 @@ public class VideoFragment extends Fragment implements ExoPlayer.EventListener {
                     mExoPlayer.getCurrentPosition(), 1f);
             progressBar.setVisibility(View.GONE);
         } else if (playbackState == ExoPlayer.STATE_BUFFERING) {
-//            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         } else {
-//            progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
         if (mStateBuilder != null) {
             mMediaSession.setPlaybackState(mStateBuilder.build());

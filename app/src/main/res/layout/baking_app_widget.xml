@@ -3,6 +3,7 @@
                 android:layout_height="match_parent"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:padding="8dp"
+    android:background="@color/background"
                 android:id="@+id/widget_container">
 
     <RelativeLayout

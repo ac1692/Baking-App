@@ -15,26 +15,5 @@ import retrofit2.http.POST;
 public interface ApiInterface {
     @GET("baking.json")
     Call<List<RecipesPojo>> getData();
-/*
-
-    @GET(".")
-    Call<BaseClassSample> getPackageNameToInstall();
-
-    @POST("/oimio/ijum/ ")
-    Call<BaseClassSample> postRatedMovies();
-
-    @POST("/oimio/ijum/ ")
-    Call<BaseClassSample> postPackageName();
-
-    @FormUrlEncoded
-    @POST("/v1/user/auth")
-    Call<PostEmailId> postEmailID(@Field("email") String email);
-
-    @FormUrlEncoded
-    @POST("/v1/user/app/register")
-    Call<PostPackage> postPackage(@Field("userid") long userid,
-                                  @Field("package") String package_name);
-*/
-
 }
 

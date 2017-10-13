@@ -71,6 +71,7 @@ public class IngredientFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("list", (ArrayList) MainActivity.recipesPojo);
+        outState.putInt("position", currentVisiblePositionIngredients);
 
     }
 
@@ -79,6 +80,7 @@ public class IngredientFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState != null) {
             MainActivity.recipesPojo = savedInstanceState.getParcelableArrayList("list");
+            currentVisiblePositionIngredients = savedInstanceState.getInt("position");
         }
     }
 
